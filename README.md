@@ -5,3 +5,12 @@ A shell for executing sqlite queries
 - sqlite path/to/database
 
 ![screen.png](screen.png)
+
+## Features:
+
+- history
+- table name completion
+
+## To Do:
+
+- ?
