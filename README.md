@@ -13,4 +13,4 @@ A shell for executing sqlite queries
 
 ## To Do:
 
-- ?
+- ? (PRs are welcome)
