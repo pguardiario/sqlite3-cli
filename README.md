@@ -8,8 +8,8 @@ A shell for executing sqlite queries
 
 ## Features:
 
-- history
-- table name completion
+- History
+- Table name completion
 
 ## To Do:
 
