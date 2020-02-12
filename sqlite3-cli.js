@@ -28,9 +28,9 @@ const exec = (stmt) => {
   try {
     let func = 'all'
     switch(true){
-      case !!stmt.match(/^\s*(select|pragma)/g):
+      case !!stmt.match(/^\s*(select|pragma)/i):
         break
-      case !!stmt.match(/^\s*(insert|create|delete|alter)/g):
+      case !!stmt.match(/^\s*(insert|create|delete|alter)/i):
         func = 'run'
         break
       default:
