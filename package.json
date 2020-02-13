@@ -11,6 +11,7 @@
   "author": "P Guardiario <pguardiario@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "better-sqlite3": "^5.4.3"
+    "better-sqlite3": "^5.4.3",
+    "yargs": "^15.1.0"
   }
 }

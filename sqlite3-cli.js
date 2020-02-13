@@ -1,19 +1,26 @@
 #!/usr/bin/env node
 
 const readline = require('readline')
-const dbName = process.argv[2]
 
-if (!dbName) {
-  console.log("Usage: sqlite db_name")
-  process.exit()
-}
+var argv = require('yargs')
+    .usage('Usage: $0 <db_path> [options]')
+    .command('db_path', 'Path to database')
+    .demandCommand(1)
+    .example('$0 foo.db --json', '')
+    .option('json', {
+      alias: 'j',
+      type: 'boolean',
+      description: 'json output'
+    })
+    .argv
 
-const db = require('better-sqlite3')(dbName, {})
+const db_path = argv._[0]
+const db = require('better-sqlite3')(db_path, {})
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout,
-  terminal: true,
+  output: process.stdin.isTTY ? process.stdout : null,
+  terminal: process.stdin.isTTY,
   prompt: 'sqlite> ',
   completer: (line) => {
     const completions = db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(r => r.name)
@@ -30,7 +37,7 @@ const exec = (stmt) => {
     switch(true){
       case !!stmt.match(/^\s*(select|pragma)/i):
         break
-      case !!stmt.match(/^\s*(insert|create|delete|alter)/i):
+      case !!stmt.match(/^\s*(insert|create|delete|alter|drop)/i):
         func = 'run'
         break
       default:
@@ -38,8 +45,12 @@ const exec = (stmt) => {
         break
     }
     const result = db.prepare(stmt)[func]()
-    console.table(func === 'run' ? [result] : result)
-    console.log(` Found ${result.length} results\n`)
+    if(argv.json){
+      console.log(JSON.stringify(result))
+    } else {
+      console.table(func === 'run' ? [result] : result)
+      console.log(` Found ${result.length} results\n`)
+    }
   } catch (e) {
     console.log("Error: " + e.message)
   }
@@ -55,7 +66,7 @@ rl.on('line', (input) => {
     }
   }
   rl.setPrompt(buffer.match(/\S/) ? 'sqlite>*' : 'sqlite> ')
-  rl.prompt()
+  if(process.stdin.isTTY) rl.prompt()
 });
 
-rl.prompt()
+if(process.stdin.isTTY) rl.prompt()
