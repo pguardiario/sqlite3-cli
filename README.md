@@ -10,6 +10,7 @@ A shell for executing sqlite queries
 
 - History
 - Table name completion
+- JSON output
 
 ## To Do:
 
