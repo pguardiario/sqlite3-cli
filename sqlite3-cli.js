@@ -37,7 +37,7 @@ const exec = (stmt) => {
     switch(true){
       case !!stmt.match(/^\s*(select|pragma)/i):
         break
-      case !!stmt.match(/^\s*(insert|create|delete|alter|drop)/i):
+      case !!stmt.match(/^\s*(insert|update|create|delete|alter|drop)/i):
         func = 'run'
         break
       default:
